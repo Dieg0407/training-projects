@@ -1,13 +1,15 @@
 use std::collections::HashSet;
 
-// leetcode problem
-// https://leetcode.com/problems/contains-duplicatep
-pub struct Solution;
+// leet code url: https://leetcode.com/problems/contains-duplicatep
 
+#[allow(dead_code)]
+struct Solution;
+
+#[allow(dead_code)]
 impl Solution {
     pub fn contains_duplicate(nums: Vec<i32>) -> bool {
         let mut set = HashSet::new();
-        !nums.into_iter().all(|n| set.insert(n))    
+        !nums.into_iter().all(|n| set.insert(n))
     }
 }
 
@@ -29,7 +31,7 @@ mod tests {
 
     #[test]
     fn case3() {
-        let vector = vec![1,1,1,3,3,4,3,2,4,2];
+        let vector = vec![1, 1, 1, 3, 3, 4, 3, 2, 4, 2];
         assert_eq!(Solution::contains_duplicate(vector), true);
     }
 }
