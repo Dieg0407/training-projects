@@ -5,3 +5,4 @@ mod group_anagrams;
 mod k_frequent_elements;
 mod array_except_self;
 mod valid_sudoku;
+mod longest_sequence;
