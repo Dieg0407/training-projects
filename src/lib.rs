@@ -10,3 +10,4 @@ mod valid_palindrome;
 mod two_sum_input_sorted;
 mod three_sum;
 mod most_water;
+mod trapping_rain_water;
