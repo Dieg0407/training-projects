@@ -13,3 +13,4 @@ mod most_water;
 mod trapping_rain_water;
 mod best_time_to_by;
 mod longest_substring_without_repeating;
+mod longest_character_replacement;
