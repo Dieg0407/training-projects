@@ -7,6 +7,7 @@ mod k_frequent_elements;
 mod longest_character_replacement;
 mod longest_sequence;
 mod longest_substring_without_repeating;
+mod min_window_substr;
 mod most_water;
 mod permutation_in_string;
 mod three_sum;
