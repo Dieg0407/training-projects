@@ -10,6 +10,7 @@ mod longest_substring_without_repeating;
 mod min_window_substr;
 mod most_water;
 mod permutation_in_string;
+mod sliding_win_max;
 mod three_sum;
 mod trapping_rain_water;
 mod two_sum;
