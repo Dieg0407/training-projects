@@ -16,4 +16,5 @@ mod trapping_rain_water;
 mod two_sum;
 mod two_sum_input_sorted;
 mod valid_palindrome;
+mod valid_parentheses;
 mod valid_sudoku;
