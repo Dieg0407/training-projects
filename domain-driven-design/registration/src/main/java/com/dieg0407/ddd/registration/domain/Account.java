@@ -1,7 +1,6 @@
 package com.dieg0407.ddd.registration.domain;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import org.springframework.util.Assert;
 
 import java.util.Objects;
@@ -11,20 +10,26 @@ public class Account {
     @EmbeddedId
     private AccountId id;
     private String username;
-    private String email;
+    @Embedded
+    @AttributeOverride(name = "validEmail", column = @Column(name = "email"))
+    private Email email;
     private String password;
 
     Account() {}
 
-    public Account(String username, String email, String password) {
-        Assert.notNull(username, "The 'username' can't be null");
-        Assert.notNull(email, "The 'email' can't be null");
-        Assert.notNull(password, "The 'password' can't be null");
+    public Account(String username, Email email, String password) {
+        Assert.notNull(username, "The account 'username' can't be null");
+        Assert.notNull(email, "The account 'email' can't be null");
+        Assert.notNull(password, "The account 'password' can't be null");
 
         this.id = new AccountId();
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public AccountId getId() {
+        return id;
     }
 
     @Override
