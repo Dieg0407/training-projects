@@ -4,10 +4,10 @@ import org.springframework.util.Assert;
 
 import java.util.UUID;
 
-public record AccountId(UUID uuid) {
+public record AccountId(UUID id) {
 
     public AccountId {
-        Assert.notNull(uuid, "UUID cannot be null!");
+        Assert.notNull(id, "UUID cannot be null!");
     }
 
     public AccountId() {

@@ -35,4 +35,30 @@ public class Email {
     public String getValidEmail() {
         return validEmail;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((validEmail == null) ? 0 : validEmail.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Email other = (Email) obj;
+        if (validEmail == null) {
+            if (other.validEmail != null)
+                return false;
+        } else if (!validEmail.equals(other.validEmail))
+            return false;
+        return true;
+    }
+
 }

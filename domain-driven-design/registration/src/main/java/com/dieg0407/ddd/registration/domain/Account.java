@@ -6,6 +6,8 @@ import org.springframework.util.Assert;
 import java.util.Objects;
 
 @Entity
+@Table(name = "accounts", schema = "registration", uniqueConstraints = @UniqueConstraint(name = "uk_username", columnNames = {
+        "username" }))
 public class Account {
     @EmbeddedId
     private AccountId id;
@@ -15,7 +17,8 @@ public class Account {
     private Email email;
     private String password;
 
-    Account() {}
+    Account() {
+    }
 
     public Account(String username, Email email, String password) {
         Assert.notNull(username, "The account 'username' can't be null");
@@ -34,8 +37,10 @@ public class Account {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Account account = (Account) o;
         return Objects.equals(id, account.id);
     }
