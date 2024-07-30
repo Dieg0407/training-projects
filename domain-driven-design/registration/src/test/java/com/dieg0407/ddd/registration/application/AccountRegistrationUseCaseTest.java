@@ -1,44 +1,42 @@
 package com.dieg0407.ddd.registration.application;
 
-import com.dieg0407.ddd.registration.domain.Account;
-import com.dieg0407.ddd.registration.domain.AccountId;
 import com.dieg0407.ddd.registration.domain.AccountRepository;
-import com.dieg0407.ddd.registration.domain.Email;
-import org.junit.jupiter.api.BeforeEach;
+
+import jakarta.transaction.Transactional;
+
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@Transactional
 public class AccountRegistrationUseCaseTest {
-    // mocks
-    @Mock
+    @Autowired
     private AccountRepository accountRepository;
-
+    @Autowired
     private AccountRegistrationUseCase accountRegistrationUseCase;
-
-    @BeforeEach
-    void beforeEach() {
-        accountRegistrationUseCase = new AccountRegistrationUseCaseImpl(accountRepository);
-    }
 
     @Test
     void shouldRegisterNewAccount() {
-        when(accountRepository.save(any())).thenReturn(new Account("dieg0407", new Email("test@test.com"), "1234"));
         final var accountId = accountRegistrationUseCase.execute("dieg0407", "test@test.com", "1234");
         assertThat(accountId)
                 .isNotNull();
+
+        final var savedAccount = accountRepository.findById(accountId);
+        assertThat(savedAccount)
+                .isPresent();
     }
 
     @Test
-    void shouldFailIfProvidedEmailIsInvalid() {
-        assertThatThrownBy(() -> {
-            accountRegistrationUseCase.execute("dieg0407", "some ill formated email", "1234");
-        }).hasMessageContaining("not valid");
+    void shouldFailIfAttemptedToRegisterAnAccountWithExistingUsername() {
+        final var repeatedUsername = "username01";
+        final var createdId = accountRegistrationUseCase.execute(repeatedUsername, "test@test.com", "1234");
+        assertThat(createdId).isNotNull();
+
+        assertThatThrownBy(() -> accountRegistrationUseCase.execute(repeatedUsername, "test@test.com", "1234"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Username %s is already registered".formatted(repeatedUsername));
     }
 }

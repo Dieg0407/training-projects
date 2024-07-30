@@ -15,9 +15,13 @@ class AccountRegistrationUseCaseImpl implements AccountRegistrationUseCase {
     }
 
     @Override
-    public AccountId execute(String username, String rawEmail, String rawPassword) {
+    public AccountId execute(String username, String rawEmail, String rawPassword) throws IllegalArgumentException {
         final var email = new Email(rawEmail);
         final var account = new Account(username, email, rawPassword);
+
+        if (accountRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Username %s is already registered".formatted(username));
+        }
 
         return accountRepository.save(account).getId();
     }
