@@ -6,11 +6,11 @@ import java.util.UUID;
 
 public record AccountId(UUID id) {
 
-    public AccountId {
-        Assert.notNull(id, "UUID cannot be null!");
-    }
+  public AccountId {
+    Assert.notNull(id, "UUID cannot be null!");
+  }
 
-    public AccountId() {
-        this(UUID.randomUUID());
-    }
+  public AccountId() {
+    this(UUID.randomUUID());
+  }
 }

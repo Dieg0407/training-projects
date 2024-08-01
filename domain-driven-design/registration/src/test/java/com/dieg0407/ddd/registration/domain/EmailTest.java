@@ -13,24 +13,18 @@ import com.dieg0407.ddd.registration.TestTypes;
 @Tag(TestTypes.UNIT)
 public class EmailTest {
 
-    @Test
-    void shouldCreateANewEmailObject() {
-        final var email = new Email("some-email@gmail.com");
+  @Test
+  void shouldCreateANewEmailObject() {
+    final var email = new Email("some-email@gmail.com");
 
-        assertThat(email)
-                .isNotNull()
-                .satisfies(e -> "some-email@gmail.com".equals(e.getValidEmail()));
-    }
+    assertThat(email).isNotNull().satisfies(e -> "some-email@gmail.com".equals(e.getValidEmail()));
+  }
 
-    @ParameterizedTest
-    @CsvSource({
-            "incorrect01",
-            "test-test02"
-    })
-    void shouldFailWhenCreatingAnIllFormattedEmail(String incorrectEmails) {
+  @ParameterizedTest
+  @CsvSource({"incorrect01", "test-test02"})
+  void shouldFailWhenCreatingAnIllFormattedEmail(String incorrectEmails) {
 
-        assertThatThrownBy(() -> new Email(incorrectEmails))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("is not valid");
-    }
+    assertThatThrownBy(() -> new Email(incorrectEmails))
+        .isInstanceOf(IllegalArgumentException.class).hasMessageContaining("is not valid");
+  }
 }
