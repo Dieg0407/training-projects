@@ -39,7 +39,7 @@ impl FileTaskRepository {
             let reader = BufReader::new(file);
             reader.lines().collect::<Result<_, _>>()?
         };
-        
+
         let id_value: i64 = lines
             .last()
             .map(|l| {

@@ -24,8 +24,7 @@ pub struct Task {
     pub status: Status,
 }
 
-#[derive(Debug)]
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct TaskId {
     pub id: i64,
 }

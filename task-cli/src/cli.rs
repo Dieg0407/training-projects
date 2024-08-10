@@ -50,22 +50,20 @@ fn create_arguments_matcher() -> ArgMatches {
 
 pub struct TaskCli {
     matcher: ArgMatches,
-    add_task_use_case: AddTaskUseCase
+    add_task_use_case: AddTaskUseCase,
 }
 
 impl TaskCli {
     pub fn new(task_repository: Box<dyn TaskRepository>) -> TaskCli {
         TaskCli {
             matcher: create_arguments_matcher(),
-            add_task_use_case: AddTaskUseCase::new(task_repository)
+            add_task_use_case: AddTaskUseCase::new(task_repository),
         }
     }
 
     pub fn process_input(&self) -> i32 {
         if let Some(matches) = self.matcher.subcommand_matches(ADD) {
-            let definition = matches.get_one::<String>("task")
-                .unwrap()
-                .clone();
+            let definition = matches.get_one::<String>("task").unwrap().clone();
             self.add_task_use_case.execute(definition)
         } else {
             0
