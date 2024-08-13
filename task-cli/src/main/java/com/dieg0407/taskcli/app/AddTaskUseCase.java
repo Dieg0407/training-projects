@@ -11,7 +11,7 @@ public class AddTaskUseCase {
     this.taskRepository = taskRepository;
   }
 
-  public TaskId execute(final String description) {
+  public TaskId execute(final String description) throws RuntimeException {
     var task = new Task(description);
     var taskId = taskRepository.create(task);
 
