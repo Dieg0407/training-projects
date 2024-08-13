@@ -49,13 +49,22 @@ public class FileTaskRepository implements TaskRepository {
       final var serializedTasks =
           Stream.of(savedTasks).map(this::serializeTask).collect(Collectors.joining(""));
 
-      Files.write(PATH, serializedTasks.getBytes(), StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING,
-          StandardOpenOption.CREATE);
+      Files.write(PATH, serializedTasks.getBytes(), StandardOpenOption.WRITE,
+          StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
 
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
 
+  }
+
+  @Override
+  public Optional<Task> findById(TaskId id) throws RuntimeException {
+    try {
+      return loadTasks().filter(task -> id.equals(task.getId().get())).findFirst();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   private Stream<Task> loadTasks() throws IOException {

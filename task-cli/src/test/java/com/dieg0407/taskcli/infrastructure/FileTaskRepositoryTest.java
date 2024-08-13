@@ -27,7 +27,8 @@ public class FileTaskRepositoryTest {
     assertThat(generatedId).isNotNull();
 
     final List<String> savedLines = Files.readAllLines(FileTaskRepository.PATH).stream()
-        .filter(l -> l.contains(String.valueOf(generatedId.id()) + "|")).collect(Collectors.toList());
+        .filter(l -> l.contains(String.valueOf(generatedId.id()) + "|"))
+        .collect(Collectors.toList());
 
     assertThat(savedLines).hasSize(1);
     assertThat(savedLines.get(0)).contains("some test description");
@@ -44,9 +45,22 @@ public class FileTaskRepositoryTest {
     taskRepository.update(generatedId, newTask);
 
     final List<String> savedLines = Files.readAllLines(FileTaskRepository.PATH).stream()
-        .filter(l -> l.contains(String.valueOf(generatedId.id()) + "|")).collect(Collectors.toList());
+        .filter(l -> l.contains(String.valueOf(generatedId.id()) + "|"))
+        .collect(Collectors.toList());
 
     assertThat(savedLines).hasSize(1);
     assertThat(savedLines.get(0)).contains("a new description value");
+  }
+
+  @Test
+  void shouldFindASavedTaskEntry() {
+    final var newTask = new Task("test n°3");
+    final var generatedId = taskRepository.create(newTask);
+
+    assertThat(generatedId).isNotNull();
+
+    final var task = taskRepository.findById(generatedId);
+    assertThat(task).isPresent();
+    assertThat(task.get()).isEqualTo(newTask);
   }
 }

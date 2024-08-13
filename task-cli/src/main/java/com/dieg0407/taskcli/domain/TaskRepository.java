@@ -1,5 +1,7 @@
 package com.dieg0407.taskcli.domain;
 
+import java.util.Optional;
+
 public interface TaskRepository {
   /**
    * Creates a new id and saves a task
@@ -19,4 +21,12 @@ public interface TaskRepository {
    * @throws IllegalArgumentException if the id doesn't exists
    */
   void update(TaskId taskId, Task incomingTask) throws RuntimeException, IllegalArgumentException;
+
+  /**
+   * Will return a task or an empty optional depending on whether or not the id exists
+   * @param id
+   * @return
+   * @throws RuntimeException
+   */
+  Optional<Task> findById(TaskId id) throws RuntimeException;
 }
