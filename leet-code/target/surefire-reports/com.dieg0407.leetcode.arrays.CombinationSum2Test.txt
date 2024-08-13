@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.dieg0407.leetcode.arrays.CombinationSum2Test
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.035 s - in com.dieg0407.leetcode.arrays.CombinationSum2Test
