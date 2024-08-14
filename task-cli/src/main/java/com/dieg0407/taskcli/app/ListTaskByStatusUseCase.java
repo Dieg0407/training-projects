@@ -12,7 +12,7 @@ public class ListTaskByStatusUseCase {
     this.taskRepository = taskRepository;
   }
 
-  public List<Task> listByStatus(TaskStatus status) {
+  public List<Task> execute(TaskStatus status) {
     return this.taskRepository.fetchByStatus(status);
   }
 

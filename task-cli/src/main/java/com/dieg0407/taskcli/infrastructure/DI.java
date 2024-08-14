@@ -4,6 +4,8 @@ import com.dieg0407.taskcli.app.AddTaskUseCase;
 import com.dieg0407.taskcli.app.DeleteTaskUseCase;
 import com.dieg0407.taskcli.app.ListAllTasksUseCase;
 import com.dieg0407.taskcli.app.ListTaskByStatusUseCase;
+import com.dieg0407.taskcli.app.MarkTaskAsDoneUseCase;
+import com.dieg0407.taskcli.app.MarkTaskInProgressUseCase;
 import com.dieg0407.taskcli.app.UpdateTaskDescriptionUseCase;
 import com.dieg0407.taskcli.domain.TaskRepository;
 
@@ -18,4 +20,8 @@ public final class DI {
       new ListTaskByStatusUseCase(TASK_REPOSITORY);
   public static final UpdateTaskDescriptionUseCase UPDATE_TASK_DESCRIPTION_USE_CASE =
       new UpdateTaskDescriptionUseCase(TASK_REPOSITORY);
+  public static final MarkTaskInProgressUseCase MARK_TASK_IN_PROGRESS_USE_CASE =
+      new MarkTaskInProgressUseCase(TASK_REPOSITORY);
+  public static final MarkTaskAsDoneUseCase MARK_TASK_AS_DONE_USE_CASE =
+      new MarkTaskAsDoneUseCase(TASK_REPOSITORY);
 }
