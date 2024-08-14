@@ -5,6 +5,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.Instant;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -62,6 +64,48 @@ public class FileTaskRepository implements TaskRepository {
   public Optional<Task> findById(TaskId id) throws RuntimeException {
     try {
       return loadTasks().filter(task -> id.equals(task.getId().get())).findFirst();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public void delete(TaskId id) throws RuntimeException {
+    try {
+      final var savedTasks = loadTasks().toArray(Task[]::new);
+
+      for (var i = 0; i < savedTasks.length; i++) {
+        if (id.id() != savedTasks[i].getId().orElse(new TaskId(-1)).id()) {
+          continue;
+        }
+        savedTasks[i] = null;
+        break;
+      }
+
+      final var serializedTasks = Stream.of(savedTasks).filter(Objects::nonNull)
+          .map(this::serializeTask).collect(Collectors.joining(""));
+
+      Files.write(PATH, serializedTasks.getBytes(), StandardOpenOption.WRITE,
+          StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
+
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public List<Task> fetch() throws RuntimeException {
+    try {
+      return loadTasks().toList();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public List<Task> fetchByStatus(TaskStatus status) throws RuntimeException {
+    try {
+      return loadTasks().filter(task -> status.equals(task.getStatus())).toList();
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
