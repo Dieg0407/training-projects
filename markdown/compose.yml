@@ -1,0 +1,37 @@
+services:
+  mysql:
+    image: "mysql:9.0"
+    environment:
+      - "MYSQL_DATABASE=markdown"
+      - "MYSQL_PASSWORD=secret"
+      - "MYSQL_ROOT_PASSWORD=verysecret"
+      - "MYSQL_USER=user"
+    ports:
+      - "3306:3306"
+    volumes:
+      - "db-data:/var/lib/mysql"
+
+  redis:
+    image: "redis:7.4.0"
+    ports:
+      - "6379:6379"
+    volumes:
+      - "redis-data:/data"
+
+  kafka:
+    image: "apache/kafka:3.8.0"
+    ports:
+      - "9092:9092"
+    volumes:
+      - "kafka-data:/var/lib/kafka/data"
+
+volumes:
+  db-data:
+    labels:
+      com.dieg0407.markdown.description: "Database Volume"
+  redis-data:
+    labels:
+      com.dieg0407.markdown.description: "Redis Volume"
+  kafka-data:
+    labels:
+      com.dieg0407.markdown.description: "Kafka Volume"
