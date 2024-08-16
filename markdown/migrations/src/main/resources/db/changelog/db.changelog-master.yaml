@@ -1,0 +1,42 @@
+databaseChangeLog:
+  - changeSet:
+      id: "1"
+      author: dieg0407
+      changes:
+        - createTable:
+            tableName: note
+            columns:
+              - column:
+                  name: note_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: uploaded_file
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: parsed_file
+                  type: varchar(255)
+
+              - column:
+                  name: note_status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
