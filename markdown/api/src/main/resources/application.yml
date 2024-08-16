@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: markdown-api
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/markdown
+    username: user
+    password: secret
+  servlet:
+    multipart:
+      max-file-size: 256KB
+      max-request-size: 256KB
