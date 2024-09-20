@@ -6,7 +6,6 @@
  * <li>Artisan</li>
  * <li>CraftType</li>
  * <li>Product</li>
- * <li>Shop</li>
  * </ul>
  * </p>
  * 
