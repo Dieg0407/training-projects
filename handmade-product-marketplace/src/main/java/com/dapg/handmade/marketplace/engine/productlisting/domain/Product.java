@@ -10,8 +10,9 @@ public class Product {
   private double stock;
   private ArtisanId artisanId;
 
-  public Product(String title, String description, double price, double stock,
+  public Product(ProductId id, String title, String description, double price, double stock,
       ArtisanId artisanId) {
+    Assert.notNull(id, "ID is required");
     Assert.notNull(title, "Title is required");
     Assert.hasText(title, "Title cannot be empty");
     Assert.notNull(description, "Description is required");
@@ -20,13 +21,17 @@ public class Product {
     Assert.isTrue(stock >= 0, "Stock must be greater than or equal to zero");
     Assert.notNull(artisanId, "Artisan ID is required");
 
-
-    this.id = new ProductId();
+    this.id = id;
     this.title = title;
     this.description = description;
     this.price = price;
     this.stock = stock;
     this.artisanId = artisanId;
+  }
+
+  public Product(String title, String description, double price, double stock,
+      ArtisanId artisanId) {
+    this(new ProductId(), title, description, price, stock, artisanId);
   }
 
   public void changeTitle(String title) {
