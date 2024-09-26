@@ -1,5 +1,6 @@
 package com.dapg.handmade.marketplace.engine.productlisting.infrastructure;
 
+import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
@@ -37,6 +38,18 @@ class MysqlProductRepository implements ProductRepository, RowMapper<Product> {
     return jdbcTemplate.queryForStream(sql, this, productId.id()).findFirst();
   }
 
+  @Override
+  public boolean removeProduct(ProductId productId) {
+    var sql = "DELETE FROM productlisting.products WHERE id = ?";
+    return jdbcTemplate.update(sql, productId.id()) > 0;
+  }
+
+  @Override
+  public List<Product> searchByTitle(String title) {
+    var sql =
+        "SELECT id, artisan_id, title, description, price, stock FROM productlisting.products WHERE lower(title) LIKE ?";
+    return jdbcTemplate.query(sql, this, title.toLowerCase());
+  }
 
   @Override
   public Product mapRow(@SuppressWarnings("null") ResultSet rs, int rowNum) throws SQLException {
