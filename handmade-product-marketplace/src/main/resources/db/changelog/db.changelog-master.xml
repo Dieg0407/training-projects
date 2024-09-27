@@ -1,0 +1,46 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+                        http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+
+    <changeSet author="dieg0407" id="1">
+        <sql> CREATE DATABASE productlisting; </sql>
+        <createTable schemaName="productlisting" tableName="artisan">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="artisan_pk" />
+            </column>
+            <column name="craft_type" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable schemaName="productlisting" tableName="product">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="product_pk" />
+            </column>
+            <column name="title" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="price" type="decimal(10,2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="stock" type="decimal(10,2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="artisan_id" type="UUID">
+                <constraints
+                    referencedTableSchemaName="productlisting"
+                    referencedTableName="artisan"
+                    referencedColumnNames="id"
+                    foreignKeyName="artisan_fk" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

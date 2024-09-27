@@ -25,7 +25,7 @@ class MysqlProductRepository implements ProductRepository, RowMapper<Product> {
   @Override
   public void save(Product product) {
     var sql =
-        "INSERT INTO productlisting.products (id, artisan_id, title, description, price, stock) VALUES (?, ?, ?, ?, ?, ?)";
+        "INSERT INTO productlisting.product (id, artisan_id, title, description, price, stock) VALUES (?, ?, ?, ?, ?, ?)";
     jdbcTemplate.update(sql, product.id().id().toString(), product.artisanId().id().toString(),
         product.title(), product.description(), product.price(), product.stock());
   }
@@ -33,21 +33,21 @@ class MysqlProductRepository implements ProductRepository, RowMapper<Product> {
   @Override
   public Optional<Product> findById(ProductId productId) {
     var sql =
-        "SELECT id, artisan_id, title, description, price, stock FROM productlisting.products WHERE id = ?";
+        "SELECT id, artisan_id, title, description, price, stock FROM productlisting.product WHERE id = ?";
 
-    return jdbcTemplate.queryForStream(sql, this, productId.id()).findFirst();
+    return jdbcTemplate.queryForStream(sql, this, productId.id().toString()).findFirst();
   }
 
   @Override
   public boolean removeProduct(ProductId productId) {
-    var sql = "DELETE FROM productlisting.products WHERE id = ?";
-    return jdbcTemplate.update(sql, productId.id()) > 0;
+    var sql = "DELETE FROM productlisting.product WHERE id = ?";
+    return jdbcTemplate.update(sql, productId.id().toString()) > 0;
   }
 
   @Override
   public List<Product> searchByTitle(String title) {
     var sql =
-        "SELECT id, artisan_id, title, description, price, stock FROM productlisting.products WHERE lower(title) LIKE ?";
+        "SELECT id, artisan_id, title, description, price, stock FROM productlisting.product WHERE lower(title) LIKE ?";
     return jdbcTemplate.query(sql, this, title.toLowerCase());
   }
 

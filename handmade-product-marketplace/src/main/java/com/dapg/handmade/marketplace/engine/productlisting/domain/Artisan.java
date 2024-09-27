@@ -61,4 +61,18 @@ public class Artisan {
     product.changeStock(stock);
     return product;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Artisan artisan = (Artisan) o;
+
+    return id.equals(artisan.id);
+  }
 }

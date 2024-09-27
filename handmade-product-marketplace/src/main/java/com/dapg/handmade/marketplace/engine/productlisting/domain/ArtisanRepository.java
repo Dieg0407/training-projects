@@ -6,4 +6,6 @@ public interface ArtisanRepository {
   boolean verifyThatArtisanExists(ArtisanId id);
 
   Optional<Artisan> findById(ArtisanId id);
+
+  void save(Artisan artisan);
 }

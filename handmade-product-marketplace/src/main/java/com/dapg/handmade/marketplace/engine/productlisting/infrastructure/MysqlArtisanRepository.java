@@ -20,14 +20,20 @@ class MysqlArtisanRepository implements ArtisanRepository, RowMapper<Artisan> {
 
   @Override
   public boolean verifyThatArtisanExists(ArtisanId id) {
-    var sql = "SELECT COUNT(*) FROM productlisting.artisans WHERE id = ?";
+    var sql = "SELECT COUNT(*) FROM productlisting.artisan WHERE id = ?";
     return jdbcTemplate.queryForObject(sql, Integer.class, id.id().toString()) > 0;
   }
 
   @Override
   public Optional<Artisan> findById(ArtisanId id) {
-    var sql = "SELECT id, craft_type FROM productlisting.artisans WHERE id = ?";
+    var sql = "SELECT id, craft_type FROM productlisting.artisan WHERE id = ?";
     return jdbcTemplate.queryForStream(sql, this, id.id().toString()).findFirst();
+  }
+
+  @Override
+  public void save(Artisan artisan) {
+    var sql = "INSERT INTO productlisting.artisan (id, craft_type) VALUES (?, ?)";
+    jdbcTemplate.update(sql, artisan.id().id().toString(), artisan.craftType().name());
   }
 
   @Override
