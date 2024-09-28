@@ -26,8 +26,9 @@ class MysqlProductRepository implements ProductRepository, RowMapper<Product> {
   public void save(Product product) {
     var sql =
         "INSERT INTO productlisting.product (id, artisan_id, title, description, price, stock) VALUES (?, ?, ?, ?, ?, ?)";
-    jdbcTemplate.update(sql, product.id().id().toString(), product.artisanId().id().toString(),
-        product.title(), product.description(), product.price(), product.stock());
+    jdbcTemplate.update(sql, product.id().value().toString(),
+        product.artisanId().value().toString(), product.title(), product.description(),
+        product.price(), product.stock());
   }
 
   @Override
@@ -35,13 +36,13 @@ class MysqlProductRepository implements ProductRepository, RowMapper<Product> {
     var sql =
         "SELECT id, artisan_id, title, description, price, stock FROM productlisting.product WHERE id = ?";
 
-    return jdbcTemplate.queryForStream(sql, this, productId.id().toString()).findFirst();
+    return jdbcTemplate.queryForStream(sql, this, productId.value().toString()).findFirst();
   }
 
   @Override
   public boolean removeProduct(ProductId productId) {
     var sql = "DELETE FROM productlisting.product WHERE id = ?";
-    return jdbcTemplate.update(sql, productId.id().toString()) > 0;
+    return jdbcTemplate.update(sql, productId.value().toString()) > 0;
   }
 
   @Override

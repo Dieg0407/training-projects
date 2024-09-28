@@ -3,9 +3,9 @@ package com.dapg.handmade.marketplace.engine.productlisting.domain;
 import java.util.UUID;
 import org.springframework.util.Assert;
 
-public record ProductId(UUID id) {
+public record ProductId(UUID value) {
   public ProductId {
-    Assert.notNull(id, "The id cannot be null");
+    Assert.notNull(value, "The id cannot be null");
   }
 
   public ProductId() {
