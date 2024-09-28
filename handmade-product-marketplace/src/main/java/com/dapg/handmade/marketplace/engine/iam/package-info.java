@@ -4,7 +4,6 @@
  * 
  * <ul>
  * <li>User</li>
- * <li>Role</li>
  * <li>Permission</li>
  * </ul>
  */

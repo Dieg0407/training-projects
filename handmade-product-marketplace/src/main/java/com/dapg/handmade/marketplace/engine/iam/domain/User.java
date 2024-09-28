@@ -7,18 +7,19 @@ public class User {
   private UserId id;
   private String username;
   private String encodedPassword;
-  private UserType type;
 
-  public User(UserId id, String username, String password, UserType type) {
+  public User(UserId id, String username, String password) {
     Assert.notNull(id, "User id is required");
     Assert.hasText(username, "Username is required");
     Assert.hasText(password, "Password is required");
-    Assert.notNull(type, "User type is required");
 
     this.id = id;
     this.username = username;
     this.encodedPassword = encodePassword(password);
-    this.type = type;
+  }
+
+  public User(String username, String password) {
+    this(new UserId(), username, password);
   }
 
   public UserId id() {
@@ -29,10 +30,6 @@ public class User {
     return username;
   }
 
-  public UserType type() {
-    return type;
-  }
-
   public boolean passwordMatches(String password) {
     return encodedPassword.equals(encodePassword(password));
   }
@@ -41,4 +38,7 @@ public class User {
     return BCrypt.hashpw(password, BCrypt.gensalt());
   }
 
+  public RoleAssignment assignRole(Role role) {
+    return new RoleAssignment(new RoleAssignmentId(), id, role);
+  }
 }
