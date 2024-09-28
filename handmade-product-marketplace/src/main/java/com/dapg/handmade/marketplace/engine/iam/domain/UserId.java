@@ -5,7 +5,7 @@ import org.springframework.util.Assert;
 
 public record UserId(UUID value) {
   public UserId {
-    Assert.notNull(value, "UserId must not be null");
+    Assert.notNull(value, "The id must not be null");
   }
 
   public UserId() {

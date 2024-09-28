@@ -31,9 +31,9 @@ public class MysqlArtisanRepositoryIntegrationTest {
     // then
     var artisanFromDb =
         jdbcTemplate.queryForMap("SELECT id, craft_type FROM productlisting.artisan WHERE id = ?",
-            new Object[] {artisanId.id().toString()});
+            new Object[] {artisanId.value().toString()});
 
-    assertThat(artisanFromDb.get("id")).isNotNull().isEqualTo(artisanId.id().toString());
+    assertThat(artisanFromDb.get("id")).isNotNull().isEqualTo(artisanId.value().toString());
     assertThat(artisanFromDb.get("craft_type")).isNotNull().isEqualTo(CraftType.CROCHET.toString());
   }
 

@@ -33,14 +33,14 @@ public class MysqlProductRepositoryIntegrationTest {
     // then
     // assert that the product was created
     var result = jdbcTemplate.queryForMap("SELECT * FROM productlisting.product where id = ?",
-        id.id().toString());
+        id.value().toString());
 
-    assertThat(result.get("id")).isEqualTo(id.id().toString());
+    assertThat(result.get("id")).isEqualTo(id.value().toString());
     assertThat(result.get("title")).isEqualTo(product.title());
     assertThat(result.get("description")).isEqualTo(product.description());
     assertThat(((BigDecimal) result.get("price")).doubleValue()).isEqualTo(product.price());
     assertThat(((BigDecimal) result.get("stock")).doubleValue()).isEqualTo(product.stock());
-    assertThat(result.get("artisan_id")).isEqualTo(product.artisanId().id().toString());
+    assertThat(result.get("artisan_id")).isEqualTo(product.artisanId().value().toString());
   }
 
   @Test
@@ -69,7 +69,7 @@ public class MysqlProductRepositoryIntegrationTest {
     // then
     assertThat(result).isTrue();
     assertThat(jdbcTemplate.queryForList("SELECT * FROM productlisting.product where id = ?",
-        product.id().id().toString())).isEmpty();
+        product.id().value().toString())).isEmpty();
   }
 
   @Test
