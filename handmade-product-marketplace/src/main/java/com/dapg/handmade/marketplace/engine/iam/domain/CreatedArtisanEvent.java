@@ -1,4 +1,4 @@
 package com.dapg.handmade.marketplace.engine.iam.domain;
 
-public record CreatedArtisanEvent(UserId artisanId) {
+public record CreatedArtisanEvent(ArtisanProfile artisanProfile) {
 }

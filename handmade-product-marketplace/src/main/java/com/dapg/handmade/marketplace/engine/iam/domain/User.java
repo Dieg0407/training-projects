@@ -37,8 +37,4 @@ public class User {
   private static String encodePassword(String password) {
     return BCrypt.hashpw(password, BCrypt.gensalt());
   }
-
-  public RoleAssignment assignRole(Role role) {
-    return new RoleAssignment(new RoleAssignmentId(), id, role);
-  }
 }
