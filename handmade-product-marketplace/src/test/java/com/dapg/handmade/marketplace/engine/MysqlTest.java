@@ -1,4 +1,4 @@
-package com.dapg.handmade.marketplace.engine.productlisting.infrastructure;
+package com.dapg.handmade.marketplace.engine;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

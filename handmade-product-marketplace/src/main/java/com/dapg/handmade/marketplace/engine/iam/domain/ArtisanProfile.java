@@ -21,6 +21,7 @@ public class ArtisanProfile {
     this.shopName = shopName;
     this.craftType = craftType;
     this.phoneNumber = phoneNumber;
+    this.userId = userId;
   }
 
   public ArtisanProfile(String shopName, CraftType craftType, String countryCode,

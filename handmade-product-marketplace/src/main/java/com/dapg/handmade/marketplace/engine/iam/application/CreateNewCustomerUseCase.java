@@ -24,7 +24,7 @@ public class CreateNewCustomerUseCase {
   }
 
   public CustomerProfileId execute(CreateNewCustomerCommand command) {
-    if (userRepository.findByUsermame(command.username()).isPresent()) {
+    if (userRepository.findByUsername(command.username()).isPresent()) {
       throw new IllegalArgumentException("Username already exists");
     }
 
