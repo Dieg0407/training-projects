@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: markdown-migrations
-  datasource:
-    url: jdbc:mysql://127.0.0.1:3306/markdown
-    username: user
-    password: secret
-  liquibase:
-    enabled: true
