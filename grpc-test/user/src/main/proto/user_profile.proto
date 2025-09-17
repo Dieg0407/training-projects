@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package userprofile;
+
+option java_package = "com.dieg0407.demo.grpc.user.contracts";
+option java_multiple_files = true;
+
+message UserProfile {
+  string user_id = 1;
+  string first_name = 2;
+  string last_name = 3;
+}
+
+message GetUserProfileRequest {
+  string user_id = 1;
+}
+
+message GetUserProfileResponse {
+  UserProfile profile = 1;
+}
+
+service UserProfileService {
+  rpc GetUserProfile(GetUserProfileRequest) returns (GetUserProfileResponse);
+}
