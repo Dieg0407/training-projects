@@ -1,0 +1,56 @@
+services:
+  dynamodb-local:
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"
+    image: "amazon/dynamodb-local:latest"
+    container_name: dynamodb-local
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./docker/dynamodb:/home/dynamodblocal/data"
+    working_dir: /home/dynamodblocal
+    networks:
+      - transactions-network
+
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin
+    container_name: dynamodb-admin
+    ports:
+      - "8001:8001"
+    environment:
+      DYNAMO_ENDPOINT: "http://dynamodb-local:8000"
+      AWS_REGION: "us-east-1"
+      AWS_ACCESS_KEY_ID: "local"
+      AWS_SECRET_ACCESS_KEY: "local"
+    depends_on:
+      - dynamodb-local
+    networks:
+      - transactions-network
+
+  dynamodb-init:
+    image: amazon/aws-cli:latest
+    container_name: dynamodb-init
+    entrypoint: ["/bin/sh", "-c"]
+    volumes:
+      - "./scripts:/scripts"
+    environment:
+      AWS_ACCESS_KEY_ID: "local"
+      AWS_SECRET_ACCESS_KEY: "local"
+      AWS_DEFAULT_REGION: "us-east-1"
+    depends_on:
+      - dynamodb-local
+    networks:
+      - transactions-network
+    command: >
+      " sleep 10 &&
+        chmod +x /scripts/init-tables.sh &&
+        chmod +x /scripts/seed-data.sh &&
+        /scripts/init-tables.sh && 
+        /scripts/seed-data.sh
+      "
+
+networks:
+  transactions-network:
+    driver: bridge
+
+volumes:
+  dynamodb-data:
