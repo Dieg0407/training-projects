@@ -1,17 +1,13 @@
 package com.dieg0407.dynamo.transactions.balance
 
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.client.HttpClientErrorException
-import org.springframework.web.client.HttpStatusCodeException
 import software.amazon.awssdk.services.dynamodb.model.TransactionCanceledException
 import java.time.ZonedDateTime
 
@@ -20,19 +16,14 @@ import java.time.ZonedDateTime
 class TransactionEventController(
     val transactionHandler: TransactionHandler,
 ) {
-    @GetMapping("/{id}")
-    fun getTransactionEvent(
-        @PathVariable id: String,
-    ): String = "Transaction event with ID: $id"
-
-    @DeleteMapping("/{id}")
-    fun deleteTransactionEvent(
-        @PathVariable id: String,
-    ): String = "Transaction event with ID: $id deleted"
+    companion object {
+        val logger = LoggerFactory.getLogger(Companion::class.java.name)
+    }
 
     @PostMapping(value = [""], consumes = ["application/json"])
     fun createTransactionEvent(
         @RequestBody payload: TransactionEventDto,
+        @RequestParam("withBalance", required = false, defaultValue = "false") withBalance: Boolean = false,
     ): ResponseEntity<Unit> {
         val transactionEvent =
             TransactionEvent(
@@ -46,11 +37,34 @@ class TransactionEventController(
             )
 
         try {
-            transactionHandler.save(transactionEvent)
+            if (!withBalance) {
+                transactionHandler.save(transactionEvent)
+                return ResponseEntity.ok().build()
+            }
+
+            val monthlyBalance =
+                MonthlyBalance(
+                    accountId = AccountId(payload.accountId),
+                    yearMonth =
+                        YearMonth(
+                            transactionEvent.timestamp.year.toString(),
+                            transactionEvent.timestamp.monthValue
+                                .toString()
+                                .padStart(2, '0'),
+                        ),
+                    balance = payload.amount,
+                    currency = "USD",
+                    lastUpdated = ZonedDateTime.parse(payload.timestamp).toLocalDateTime(),
+                )
+
+            transactionHandler.save(transactionEvent, monthlyBalance)
 
             return ResponseEntity.ok().build()
         } catch (e: TransactionCanceledException) {
-            e.printStackTrace(System.err)
+            logger.error("Transaction Cancelled detected!", e)
+            for (reason in e.cancellationReasons()) {
+                logger.error("Cancellation reason: $reason")
+            }
             return ResponseEntity.status(HttpStatus.CONFLICT).build()
         }
     }

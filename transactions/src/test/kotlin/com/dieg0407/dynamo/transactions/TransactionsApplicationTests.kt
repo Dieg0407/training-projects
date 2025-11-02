@@ -22,7 +22,7 @@ class TransactionsApplicationTests {
             """
             {
               "transactionId": "$randomTransactionId",
-              "accountId": "acc-001",
+              "accountId": "acc-$randomTransactionId",
               "timestamp": "2024-06-15T10:00:00Z",
               "amount": 100.0,
               "description": "Grocery Shopping",
@@ -35,16 +35,9 @@ class TransactionsApplicationTests {
         // and then verify that both MonthlyBalance and PurchaseEvent are stored correctly.
         webClient
             .post()
-            .uri("/transactions")
+            .uri("/transactions?withBalance=true")
             .bodyValue(payload)
             .header("Content-Type", "application/json")
-            .exchange()
-            .expectStatus()
-            .isOk
-
-        webClient
-            .delete()
-            .uri("/transactions/$randomTransactionId")
             .exchange()
             .expectStatus()
             .isOk
@@ -57,7 +50,7 @@ class TransactionsApplicationTests {
             """
             {
               "transactionId": "$randomTransactionId",
-              "accountId": "acc-002",
+              "accountId": "acc-$randomTransactionId",
               "timestamp": "2024-06-16T11:00:00Z",
               "amount": 50.0,
               "description": "Fuel",
@@ -79,18 +72,11 @@ class TransactionsApplicationTests {
         // Second attempt to store the same event should be prevented
         webClient
             .post()
-            .uri("/transactions")
+            .uri("/transactions?withBalance=true")
             .bodyValue(payload)
             .header("Content-Type", "application/json")
             .exchange()
             .expectStatus()
             .is4xxClientError
-
-        webClient
-            .delete()
-            .uri("/transactions/$randomTransactionId")
-            .exchange()
-            .expectStatus()
-            .isOk
     }
 }
