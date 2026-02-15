@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.dieg0407'
+version = '1.0.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+}
+
+test {
+    useJUnitPlatform()
+}
