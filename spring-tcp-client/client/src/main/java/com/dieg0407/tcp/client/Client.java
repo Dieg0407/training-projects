@@ -11,7 +11,7 @@ public class Client {
   void main(String... args) {
     // open a tcp connection to port 3000
     AtomicBoolean stop = new AtomicBoolean(false);
-    try(Socket socket = new Socket("localhost", 3000);
+    try (Socket socket = new Socket("localhost", 3000);
         PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
         BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
@@ -24,8 +24,7 @@ public class Client {
       // wait for them to finish (they won't, but we want to keep the main thread alive)
       writerThread.join();
       readerThread.join();
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       IO.println("Failed to connect to server: " + e.getMessage());
       System.exit(1);
     }

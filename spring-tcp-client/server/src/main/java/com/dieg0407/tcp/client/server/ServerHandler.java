@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class ServerHandler implements Runnable {
+
   private final Socket socket;
 
   public ServerHandler(Socket socket) {
@@ -17,7 +18,7 @@ public class ServerHandler implements Runnable {
     IO.println("Client connected: " + socket.getRemoteSocketAddress());
 
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);) {
+        PrintWriter writer = new PrintWriter(socket.getOutputStream(), true)) {
 
       String line = null;
       do {
@@ -28,8 +29,7 @@ public class ServerHandler implements Runnable {
         IO.println("Echoing back to client...");
         writer.println("Ack: " + line);
       } while (!socket.isClosed() && line != null);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       IO.println("Error reading from client: " + e.getMessage());
     }
   }
