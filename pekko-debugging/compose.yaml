@@ -77,5 +77,37 @@ services:
       KAFKA_CLUSTERS_1_BOOTSTRAPSERVERS: cluster2:9092
     networks:
       - shared
+
+  kafka-init:
+    image: apache/kafka:4.2.1-rc3
+    container_name: kafka-init
+    networks:
+      - shared
+    depends_on:
+      - cluster1
+      - cluster2
+    # Using the array syntax makes multiline bash scripts bulletproof in YAML
+    command:
+      - /bin/bash
+      - -c
+      - |
+        echo "Waiting for cluster 1 to be ready..."
+        until /opt/kafka/bin/kafka-topics.sh --bootstrap-server cluster1:9092 --list > /dev/null 2>&1; do
+          echo "Cluster 1 is unavailable - sleeping"
+          sleep 2
+        done
+        echo "Cluster 1 is up! Creating topics..."
+        /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --bootstrap-server cluster1:9092 --partitions 3 --replication-factor 1 --topic test.request
+
+        echo "Waiting for cluster 2 to be ready..."
+        until /opt/kafka/bin/kafka-topics.sh --bootstrap-server cluster2:9092 --list > /dev/null 2>&1; do
+          echo "Cluster 2 is unavailable - sleeping"
+          sleep 2
+        done
+        echo "Cluster 2 is up! Creating topics..."
+        /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --bootstrap-server cluster2:9092 --partitions 3 --replication-factor 1 --topic test.response
+        
+        echo "All topics created successfully. Init container exiting."
+
 networks:
   shared:
